@@ -1,1 +1,60 @@
+📄 variables.tf
+hcl
+Copy
+Edit
+# ================================
+# AWS REGION
+# ================================
+variable "aws_region" {
+  description = "AWS region to deploy infrastructure (e.g., us-east-1)"
+  type        = string
+}
+
+# ================================
+# EC2 INSTANCE TYPE
+# ================================
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
+  default     = "t2.micro"
+}
+
+# ================================
+# AMI ID
+# ================================
+variable "ami_id" {
+  description = "Amazon Machine Image (AMI) ID for EC2"
+  type        = string
+}
+
+# ================================
+# EC2 KEY PAIR NAME
+# ================================
+variable "key_name" {
+  description = "Name of the existing AWS key pair for SSH access"
+  type        = string
+}
+
+# ================================
+# VPC ID
+# ================================
+variable "vpc_id" {
+  description = "ID of the VPC to deploy the EC2 instance in"
+  type        = string
+}
+
+# ================================
+# SUBNET ID
+# ================================
+variable "subnet_id" {
+  description = "ID of the subnet for the EC2 instance"
+  type        = string
+}
+✅ Notes:
+All variables are strictly typed
+
+You can override any of them with a terraform.tfvars file or via -var flags
+
+These keep your .tf files clean and portable
+
 
