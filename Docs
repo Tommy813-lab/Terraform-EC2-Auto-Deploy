@@ -1,1 +1,51 @@
+# Terraform EC2 Auto-Deploy Architecture
 
+## Overview
+
+This project automates provisioning an AWS EC2 instance using Terraform and deploys software or services on it via startup scripts. The goal is to create an easily repeatable, scalable environment for hosting web applications or services.
+
+---
+
+## Components
+
+### 1. Terraform
+
+- Manages all AWS infrastructure resources as code
+- Creates EC2 instance, security groups, IAM roles, and key pairs
+- Outputs instance information such as public IP and DNS
+
+### 2. EC2 Instance
+
+- Created with specified AMI and instance type
+- Runs user data scripts on launch to install and configure software automatically (e.g., Apache web server)
+
+### 3. Startup Scripts
+
+- Bash scripts located in the `scripts/` folder
+- Executed during instance initialization via Terraform user data
+- Installs packages, configures services, and prepares environment
+
+---
+
+## Workflow
+
+1. **Initialize Terraform**:  
+   Run `terraform init` to set up plugins and providers.
+
+2. **Apply Terraform plan**:  
+   Run `terraform apply` to provision resources.
+
+3. **EC2 boots and executes user data**:  
+   The user data script runs `install.sh` or similar to install required software and configure the instance.
+
+4. **Access your instance**:  
+   Terraform outputs the public IP or DNS to connect via SSH or browser.
+
+---
+
+## Terraform Resources Created
+
+- **aws_instance**: The EC2 virtual machine  
+- **aws_security_group**: Firewall rules to allow inbound traffic (e.g., HTTP, SSH)  
+- **aws_key_pair**: SSH key for accessing the instance securely  
+- **aws
