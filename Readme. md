@@ -1,100 +1,132 @@
-
 # Terraform EC2 Auto Deploy
 
-This project automates the deployment of an Amazon EC2 instance using Terraform. Upon provisioning, the instance runs a Bash script that installs and configures Nginx.
+## Project Overview
 
-## 📌 Tech Stack
-- AWS (EC2, VPC, Security Groups)
-- Terraform
-- Bash Scripting
-- GitHub Actions (CI/CD)
+This project automates the provisioning and deployment of AWS EC2 instances using Terraform. It showcases how infrastructure-as-code (IaC) enables repeatable, scalable, and maintainable cloud infrastructure deployments — a critical skill for modern cloud engineers and DevOps professionals.
 
-## 📁 Project Structure
+By leveraging Terraform, this repo simplifies EC2 instance creation with configurable parameters, security group setup, and automated deployment workflows, eliminating manual errors and improving efficiency.
 
-terraform/ │   └── main.tf
-│   └── variables.tf
-│   └── outputs.tf
-scripts/ │   └── setup-nginx.sh
-docs/ │   └── architecture.png
+---
 
-## ⚙️ How to Use
+## Why This Project Matters
 
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/Tommy813-lab/Terraform-EC2-Auto-Deploy.git
+- **Infrastructure as Code (IaC):** Demonstrates best practices for managing cloud infrastructure with version-controlled code.
+- **Automation & Scalability:** Enables rapid, consistent EC2 deployments with minimal manual intervention.
+- **Security Focused:** Configures security groups and key pairs for secure SSH access.
+- **Foundation for Advanced Workflows:** Lays groundwork for integrating CI/CD pipelines and complex multi-resource infrastructure.
 
-2. Customize variables in terraform.tfvars
+---
 
+## Architecture Diagram
 
-3. Initialize and apply:
+```mermaid
+flowchart LR
+    A[Terraform CLI] --> B[AWS API]
+    B --> C[EC2 Instance]
+    B --> D[Security Groups]
+    B --> E[Key Pair]
+    C --> F[User Data Scripts]
+Features
+Modular Terraform configuration for EC2 instance provisioning
 
+Parameterized inputs for flexible deployment (instance type, key pair, AMI)
+
+Security group setup allowing SSH from specified IPs
+
+Automated user-data scripts for instance initialization (optional)
+
+Outputs for instance public IP and DNS
+
+Prerequisites
+AWS Account with appropriate IAM permissions
+
+Installed and configured Terraform (v1.0+ recommended)
+
+AWS CLI configured (aws configure)
+
+SSH key pair ready for EC2 access
+
+Getting Started
+1. Clone the Repository
+bash
+Copy
+Edit
+git clone https://github.com/Tommy813-lab/Terraform-EC2-Auto-Deploy.git
+cd Terraform-EC2-Auto-Deploy
+2. Configure Variables
+Edit variables.tf or create a terraform.tfvars file to customize:
+
+hcl
+Copy
+Edit
+instance_type = "t2.micro"
+key_name      = "your-ssh-key-name"
+allowed_ip    = "your.ip.address/32"
+3. Initialize Terraform
+bash
+Copy
+Edit
 terraform init
+4. Preview Infrastructure Changes
+bash
+Copy
+Edit
+terraform plan
+5. Apply Terraform Configuration
+bash
+Copy
+Edit
 terraform apply
+Confirm with yes when prompted. Terraform will provision the EC2 instance and related resources.
 
+6. Connect to Your EC2 Instance
+Once deployed, retrieve the instance public IP from Terraform outputs:
 
-4. SSH into the instance:
+bash
+Copy
+Edit
+terraform output public_ip
+SSH into your instance:
 
-ssh -i key.pem ec2-user@<public-ip>
+bash
+Copy
+Edit
+ssh -i /path/to/your-key.pem ec2-user@<public_ip>
+Cleanup
+To destroy all resources created by Terraform and avoid AWS charges:
 
+bash
+Copy
+Edit
+terraform destroy
+Troubleshooting
+Permission Denied (publickey): Ensure your SSH key matches the key_name used and .pem file permissions are set (chmod 400).
 
+Access Denied for Terraform: Verify AWS IAM user/role permissions.
 
-🧱 Architecture
+Security Group Issues: Make sure allowed_ip matches your current public IP address.
 
+Terraform Errors: Run terraform validate to check configuration syntax.
 
+Future Enhancements
+Add automated user-data scripts to bootstrap software on EC2 launch
 
-🔐 Security
+Modularize Terraform further for multi-environment support
 
-.pem file not committed (add to .gitignore)
+Integrate with CI/CD pipelines (GitHub Actions, Jenkins)
 
-Least-privilege IAM roles
+Add monitoring and alerting (CloudWatch, SNS)
 
-Open ports restricted to your IP
+Support additional AWS resources (Load Balancers, Auto Scaling)
 
+Contact
+Charles T Bucher (Tommy813-lab)
+📧 buchercharles2@gmail.com
+GitHub Profile
 
-📸 Output Example
+License
+This project is licensed under the MIT License.
 
+This repo is a practical demonstration of leveraging Terraform for cloud infrastructure automation — a crucial capability for any cloud engineer’s toolkit.
 
-
-> ✅ Let me know if you want me to write that README for you — fast win.
-
----
-
-### 🔹 2. **Folder Structure – Clean It Up**
-
-/terraform/
-
-main.tf
-
-variables.tf
-
-outputs.tf /scripts/
-
-setup-nginx.sh /docs/
-
-architecture.png
-
-nginx-installed.png .gitignore README.md
-
-
-> 🚫 No files in root except the README and .gitignore.
-
----
-
-### 🔹 3. **Terraform – No Hardcoding**
-
-Replace this:
-```hcl
-ami = "ami-08c40ec9ead489470"
-instance_type = "t2.micro"
-
-With:
-
-variable "ami_id" {}
-variable "instance_type" {
-  default = "t2.micro"
-}
-
-Then put this in terraform.tfvars:
-
-ami_id        = "ami-08c40ec9ead489470"
-instance_type = "t2.micro"
+yaml
