@@ -1,1 +1,74 @@
+🛠️ Infrastructure as Code: Terraform EC2 Auto Deploy
+This project uses Terraform to provision cloud infrastructure on AWS in a fully automated, repeatable, and auditable way — also known as Infrastructure as Code (IaC).
+
+📌 What It Does
+This Terraform configuration:
+
+✅ Creates an EC2 instance
+✅ Attaches a security group with open HTTP (port 80)
+✅ Uses a key pair for secure SSH access
+✅ Outputs the public IP so you can access the server right away
+
+Everything is deployed with one command — no manual clicking around the AWS Console.
+
+📁 Project Structure
+bash
+Copy
+Edit
+Terraform-EC2-Auto-Deploy/
+│
+├── main.tf          # Core resources: EC2, Security Group
+├── variables.tf     # Input variables like region, AMI, key pair
+├── outputs.tf       # Exports values like public IP
+├── provider.tf      # AWS provider config
+└── .gitignore       # Ignores state files and sensitive data
+🚀 How to Deploy
+Step 1 – Configure AWS CLI
+
+bash
+Copy
+Edit
+aws configure
+Step 2 – Initialize Terraform
+
+bash
+Copy
+Edit
+terraform init
+Step 3 – Preview Changes
+
+bash
+Copy
+Edit
+terraform plan
+Step 4 – Apply Changes
+
+bash
+Copy
+Edit
+terraform apply
+Wait ~1 min and your EC2 instance is live 🎯
+
+🧠 Why It Matters (IaC Style)
+This project follows Infrastructure as Code principles by:
+
+🔁 Making cloud deployments repeatable
+
+🔒 Avoiding manual misconfigurations
+
+📜 Keeping a full version history of infra changes
+
+💼 Showing employers real-world cloud automation skills
+
+Whether you're rebuilding your cloud lab, prepping for a job interview, or scaling infrastructure, this repo gives you a solid, repeatable foundation.
+
+🔧 Technologies Used
+Terraform – Infrastructure as Code
+
+AWS EC2 – Compute instance for web app/server
+
+AWS Security Groups – Firewall rules for EC2 access
+
+Git/GitHub – Source control & code history
+
 
