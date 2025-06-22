@@ -1,1 +1,139 @@
+📦 Terraform EC2 Auto Deploy
+A beginner-friendly Infrastructure as Code (IaC) project using Terraform to deploy a secure and repeatable EC2 instance on AWS.
+
+This project proves that you understand cloud automation, version control, and real-world DevOps principles — no AWS Console clicking required.
+
+🚀 What It Does
+This Terraform setup will:
+
+✅ Deploy an EC2 instance in your chosen region
+
+✅ Attach a security group that allows HTTP (80) and SSH (22)
+
+✅ Use your AWS key pair for secure access
+
+✅ Output the instance’s public IP when done
+
+✅ (Optional) Run a user-data script to install packages on launch
+
+🧠 Why This Matters
+This repo shows you can:
+
+Write Infrastructure as Code like a real cloud engineer
+
+Automate AWS resource provisioning
+
+Use version control for infrastructure
+
+Work with real IaC tools like Terraform and Git
+
+Deploy production-grade infra from scratch
+
+📁 Project Structure
+bash
+Copy
+Edit
+Terraform-EC2-Auto-Deploy/
+│
+├── main.tf           # Resources: EC2 + Security Group
+├── variables.tf      # Input variables like region, AMI, key
+├── outputs.tf        # Outputs like public IP
+├── provider.tf       # AWS provider config
+├── scripts/
+│   └── user_data.sh  # (Optional) Bootstrap script for EC2
+└── .gitignore        # Ignore state files and secrets
+🔧 Installs & Prereqs
+Make sure these are installed:
+
+✅ AWS CLI (configured with aws configure)
+
+✅ Terraform
+
+✅ AWS Key Pair created in EC2 Console (or generate with ssh-keygen)
+
+✅ Git (if you're cloning this repo)
+
+⚙️ How to Deploy
+Clone the repo
+
+bash
+Copy
+Edit
+git clone https://github.com/Tommy813-lab/Terraform-EC2-Auto-Deploy.git
+cd Terraform-EC2-Auto-Deploy
+Update your variables in terraform.tfvars or manually set in variables.tf
+
+Initialize Terraform
+
+bash
+Copy
+Edit
+terraform init
+Preview the infrastructure
+
+bash
+Copy
+Edit
+terraform plan
+Apply the deployment
+
+bash
+Copy
+Edit
+terraform apply
+Done! Your EC2 instance is live.
+
+📤 Outputs
+When the deployment completes, Terraform will return:
+
+EC2 Public IP
+
+Instance ID
+
+Security group info (optional)
+
+🧼 Clean Up
+When you’re done testing:
+
+bash
+Copy
+Edit
+terraform destroy
+This will tear down all resources automatically. No surprises.
+
+📌 Notes
+Designed for learning, cloud portfolios, and job interviews
+
+Reusable across any AWS region or VPC
+
+Security groups are basic — not production-hardened
+
+💬 Want More?
+Next version might include:
+
+S3 backup integration
+
+CloudWatch logging
+
+IAM roles and policies
+
+Auto-scaling groups
+
+Full VPC deployment
+
+🔥 Built By
+Charles Bucher (aka Tommy813)
+🏗️ Felon2Cloud | Career transitioner building in public
+💻 GitHub: @Tommy813-lab
+
+
+
+
+
+
+
+
+
+
+
 
