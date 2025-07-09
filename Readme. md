@@ -1,101 +1,116 @@
-Terraform EC2 Auto Deploy
-By Charles T Bucher — Aspiring Cloud Engineer
+☁️ ec2-webapp-with-s3-backend
+A realistic AWS project simulating a web application hosted on EC2 with S3 as its backend storage. This setup mimics real-world deployments like image galleries, video streamers, or document portals—where your app logic lives on EC2, and all heavy files live in S3. Clean separation of compute and storage, like the pros do it.
 
-Scenario: Launching a Web App Server in AWS
-Imagine you’re spinning up a new web application that needs a reliable server in AWS. You want to launch an EC2 instance that’s:
+📘 Scenario
+You’re a Cloud Support Engineer working for a small startup that just launched a lightweight photo-sharing web app.
 
-Secure (SSH access locked down)
+Problem: the site stores all uploads locally on the EC2 instance.
+Now it’s crashing when storage fills up.
 
-Automatically set up with all necessary software
+Your task: Migrate all user-uploaded files to Amazon S3, refactor the app to read/write from S3, and set IAM permissions tight enough to sleep well at night.
 
-Easy to replicate or scale as demand grows
+🧱 Architecture Overview
+markdown
+Copy
+Edit
+                   ┌────────────────────────┐
+                   │   User's Browser       │
+                   └──────────┬─────────────┘
+                              │ HTTP Request
+                              ▼
+                    ┌──────────────────┐
+                    │  EC2 Web Server  │
+                    │  (Flask / Node)  │
+                    └──────┬───────────┘
+                           │ Uses AWS SDK (Boto3 / AWS SDK)
+                           ▼
+                  ┌─────────────────────┐
+                  │     S3 Bucket       │
+                  │  (Images / Files)   │
+                  └─────────────────────┘
+🚀 What You’ll Learn
+Feature	Description
+EC2 Setup	Launch, secure, and configure EC2 as a web server
+S3 Integration	Store and retrieve files from an S3 bucket
+IAM Role for EC2	Use roles instead of access keys (because security matters)
+Python Flask Web App	Lightweight backend to upload & list images
+Security Best Practices	Least privilege policies + S3 bucket policy
 
-Doing this manually is error-prone and slow — enter Infrastructure as Code with Terraform. This project shows you how to script your entire EC2 deployment so it’s repeatable, secure, and scalable.
-
-Architecture Diagram
-mermaid
-Copy code
-flowchart LR
-    User[User Runs Terraform] --> TerraformCLI["Terraform CLI"]
-    TerraformCLI --> AWSAPI["AWS API"]
-    AWSAPI --> EC2Instance["EC2 Instance"]
-    AWSAPI --> SecurityGroups["Security Groups"]
-    AWSAPI --> KeyPair["Key Pair"]
-    EC2Instance --> UserData["User Data Scripts"]
-    EC2Instance --> PublicIP["Public IP Address"]
-    User --> SSH["SSH Access"]
-How It Works
-You run Terraform CLI locally to start provisioning.
-
-Terraform talks to AWS APIs, creating the EC2 instance, security groups, and key pairs based on your config.
-
-Your EC2 instance boots, running user data scripts that install your web server or other software automatically.
-
-Terraform outputs the public IP, so you can SSH into your instance and verify everything is ready.
-
-Why Use This Setup?
-Speed: Launch fully configured servers in minutes
-
-Consistency: No manual setup errors or missed steps
-
-Security: Control SSH access and permissions through code
-
-Scalability: Easily spin up multiple servers with the same config
-
-Getting Started
-Step 1: Clone the Repo
+🔧 How to Deploy It
+1. 🖥️ Launch EC2 (Amazon Linux 2)
 bash
-Copy code
-git clone https://github.com/Tommy813-lab/Terraform-EC2-Auto-Deploy.git
-cd Terraform-EC2-Auto-Deploy
-Step 2: Configure Your Variables
-Update variables.tf or create terraform.tfvars:
-
-hcl
-Copy code
-instance_type = "t2.micro"
-key_name      = "your-ssh-key-name"
-allowed_ip    = "your.ip.address/32"
-Step 3: Initialize and Apply
+Copy
+Edit
+aws ec2 run-instances \
+  --image-id ami-0abcdef1234567890 \
+  --instance-type t2.micro \
+  --iam-instance-profile Name=EC2S3AccessRole \
+  --key-name MyKeyPair \
+  --security-groups my-web-sg
+2. ⚙️ Install Flask App + Dependencies
 bash
-Copy code
-terraform init
-terraform apply
-Confirm with yes when prompted.
-
-Step 4: Connect
-Get your instance’s IP:
-
+Copy
+Edit
+sudo yum update -y
+sudo yum install python3 git -y
+pip3 install flask boto3
+git clone https://github.com/Tommy813-lab/ec2-webapp-with-s3-backend
+cd ec2-webapp-with-s3-backend
+python3 app.py
+3. 🪣 Create the S3 Bucket
 bash
-Copy code
-terraform output public_ip
-SSH in:
+Copy
+Edit
+aws s3 mb s3://charles-webapp-uploads
+Make it private by default and add a CORS policy if using JS uploads.
 
-bash
-Copy code
-ssh -i /path/to/your-key.pem ec2-user@<public_ip>
-Troubleshooting & Tips
-Permission errors? Check SSH key permissions (chmod 400) and matching key names.
+4. 🔐 IAM Role for EC2 Access
+Attach a policy like this to the EC2 instance role:
 
-Access denied? Confirm your AWS IAM permissions.
+json
+Copy
+Edit
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:PutObject", "s3:GetObject", "s3:ListBucket"],
+      "Resource": [
+        "arn:aws:s3:::charles-webapp-uploads",
+        "arn:aws:s3:::charles-webapp-uploads/*"
+      ]
+    }
+  ]
+}
+🧠 Real-World Use Cases
+🖼️ Image/file upload apps
 
-Can’t connect? Ensure your IP matches the security group’s allowed IP.
+📁 Static site backend storage
 
-Validate your config with terraform validate before applying.
+🎓 Proof-of-concept for hybrid cloud compute + object storage
 
-Next Steps
-Add bootstrap scripts for automated app deployment
+🛠️ Foundation for larger web architectures (S3 + Lambda + API Gateway)
 
-Modularize configs for staging and production environments
+📈 Success Criteria
+✅ EC2 hosts a working Flask app
+✅ Uploads go straight to S3
+✅ Users can view file URLs via the app
+✅ IAM permissions are scoped securely
+✅ Clean, testable architecture
 
-Integrate with CI/CD pipelines for automated deploys
+📚 Skills Highlighted
+EC2 provisioning & Linux setup
 
-Add monitoring with CloudWatch and SNS alerts
+S3 backend integration using AWS SDKs
 
-Contact
-Charles T Bucher (Tommy813-lab)
-📧 buchercharles2@gmail.com
-GitHub Profile
+IAM Role management & security policies
 
-License
-MIT License
+Flask app deployment on AWS
+
+Basic web architecture on AWS
+
+🧑‍💻 About Me
+Charles – Future Cloud Engineer, current AWS grinder 🛠️
+Learning by building real infrastructure, not clicking around consoles.
+GitHub: Tommy813-lab
