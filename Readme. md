@@ -1,123 +1,120 @@
-# Terraform EC2 Auto Deploy
+Terraform EC2 Auto Deploy
+By Charles T Bucher — Aspiring Cloud Engineer
 
-## Project Overview
+Project Overview
+This project automates provisioning and deployment of AWS EC2 instances using Terraform. It’s a hands-on example of how Infrastructure as Code (IaC) helps build repeatable, scalable, and secure cloud environments — a must-have skill for any modern cloud engineer or DevOps pro.
 
-This project automates the provisioning and deployment of AWS EC2 instances using Terraform. It showcases how infrastructure-as-code (IaC) enables repeatable, scalable, and maintainable cloud infrastructure deployments — a critical skill for modern cloud engineers and DevOps professionals.
+With this setup, you get simple, flexible EC2 instance creation, security group configuration, and automated initialization using user-data scripts — all reducing manual work and human error.
 
-By leveraging Terraform, this repo simplifies EC2 instance creation with configurable parameters, security group setup, and automated deployment workflows, eliminating manual errors and improving efficiency.
+Why This Project Matters
+Infrastructure as Code: Manage cloud infrastructure with clean, version-controlled code.
 
----
+Automation & Scalability: Rapidly deploy consistent EC2 instances with ease.
 
-## Why This Project Matters
+Security: Set up security groups and SSH key pairs for safe remote access.
 
-- **Infrastructure as Code (IaC):** Demonstrates best practices for managing cloud infrastructure with version-controlled code.
-- **Automation & Scalability:** Enables rapid, consistent EC2 deployments with minimal manual intervention.
-- **Security Focused:** Configures security groups and key pairs for secure SSH access.
-- **Foundation for Advanced Workflows:** Lays groundwork for integrating CI/CD pipelines and complex multi-resource infrastructure.
+Future-Ready: Solid foundation for CI/CD pipeline integration and complex infrastructure.
 
----
-
-## Architecture Diagram
-
-```mermaid
+Architecture Diagram
+mermaid
+Copy code
 flowchart LR
-    A[Terraform CLI] --> B[AWS API]
-    B --> C[EC2 Instance]
-    B --> D[Security Groups]
-    B --> E[Key Pair]
-    C --> F[User Data Scripts]
+    TerraformCLI["Terraform CLI"]
+    AWSAPI["AWS API"]
+    EC2Instance["EC2 Instance"]
+    SecurityGroups["Security Groups"]
+    KeyPair["Key Pair"]
+    UserData["User Data Scripts"]
+
+    TerraformCLI --> AWSAPI
+    AWSAPI --> EC2Instance
+    AWSAPI --> SecurityGroups
+    AWSAPI --> KeyPair
+    EC2Instance --> UserData
 Features
-Modular Terraform configuration for EC2 instance provisioning
+Modular Terraform configs for EC2 provisioning
 
-Parameterized inputs for flexible deployment (instance type, key pair, AMI)
+Flexible parameters (instance type, key pair, AMI)
 
-Security group setup allowing SSH from specified IPs
+Security group rules allowing SSH from your IP
 
-Automated user-data scripts for instance initialization (optional)
+Automated user-data scripts for instance setup (optional)
 
-Outputs for instance public IP and DNS
+Outputs with instance public IP and DNS
 
 Prerequisites
-AWS Account with appropriate IAM permissions
+AWS account with IAM permissions
 
-Installed and configured Terraform (v1.0+ recommended)
+Terraform installed and configured (v1.0+)
 
-AWS CLI configured (aws configure)
+AWS CLI installed and configured (aws configure)
 
 SSH key pair ready for EC2 access
 
 Getting Started
-1. Clone the Repository
+1. Clone the repo
 bash
-Copy
-Edit
+Copy code
 git clone https://github.com/Tommy813-lab/Terraform-EC2-Auto-Deploy.git
 cd Terraform-EC2-Auto-Deploy
-2. Configure Variables
-Edit variables.tf or create a terraform.tfvars file to customize:
+2. Configure variables
+Edit variables.tf or create terraform.tfvars with your settings:
 
 hcl
-Copy
-Edit
+Copy code
 instance_type = "t2.micro"
 key_name      = "your-ssh-key-name"
 allowed_ip    = "your.ip.address/32"
 3. Initialize Terraform
 bash
-Copy
-Edit
+Copy code
 terraform init
-4. Preview Infrastructure Changes
+4. Preview changes
 bash
-Copy
-Edit
+Copy code
 terraform plan
-5. Apply Terraform Configuration
+5. Apply config
 bash
-Copy
-Edit
+Copy code
 terraform apply
-Confirm with yes when prompted. Terraform will provision the EC2 instance and related resources.
+Confirm with yes to launch the resources.
 
-6. Connect to Your EC2 Instance
-Once deployed, retrieve the instance public IP from Terraform outputs:
+6. Connect to your instance
+Get the public IP:
 
 bash
-Copy
-Edit
+Copy code
 terraform output public_ip
-SSH into your instance:
+SSH in:
 
 bash
-Copy
-Edit
+Copy code
 ssh -i /path/to/your-key.pem ec2-user@<public_ip>
 Cleanup
-To destroy all resources created by Terraform and avoid AWS charges:
+To remove all resources and avoid charges:
 
 bash
-Copy
-Edit
+Copy code
 terraform destroy
-Troubleshooting
-Permission Denied (publickey): Ensure your SSH key matches the key_name used and .pem file permissions are set (chmod 400).
+Troubleshooting Tips
+Permission Denied (publickey): Make sure your SSH key matches and .pem file permissions are set (chmod 400).
 
-Access Denied for Terraform: Verify AWS IAM user/role permissions.
+Access Denied: Check AWS IAM user or role permissions.
 
-Security Group Issues: Make sure allowed_ip matches your current public IP address.
+Security Group Issues: Ensure allowed_ip matches your current IP.
 
-Terraform Errors: Run terraform validate to check configuration syntax.
+Terraform Errors: Run terraform validate to catch syntax issues.
 
 Future Enhancements
-Add automated user-data scripts to bootstrap software on EC2 launch
+Add automated user-data scripts for app bootstrap
 
-Modularize Terraform further for multi-environment support
+Modularize for multi-environment deployments
 
-Integrate with CI/CD pipelines (GitHub Actions, Jenkins)
+Integrate CI/CD pipelines (GitHub Actions, Jenkins)
 
-Add monitoring and alerting (CloudWatch, SNS)
+Add monitoring & alerting with CloudWatch & SNS
 
-Support additional AWS resources (Load Balancers, Auto Scaling)
+Support load balancers and auto scaling groups
 
 Contact
 Charles T Bucher (Tommy813-lab)
@@ -125,8 +122,4 @@ Charles T Bucher (Tommy813-lab)
 GitHub Profile
 
 License
-This project is licensed under the MIT License.
-
-This repo is a practical demonstration of leveraging Terraform for cloud infrastructure automation — a crucial capability for any cloud engineer’s toolkit.
-
-yaml
+MIT License
