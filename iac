@@ -1,74 +1,75 @@
 🛠️ Infrastructure as Code: Terraform EC2 Auto Deploy
-This project uses Terraform to provision cloud infrastructure on AWS in a fully automated, repeatable, and auditable way — also known as Infrastructure as Code (IaC).
+By Charles — Aspiring Cloud Engineer
 
-📌 What It Does
-This Terraform configuration:
+📌 What This Project Does
+Automates AWS EC2 instance creation using Terraform — no clicks, all code. Here’s the scoop:
 
-✅ Creates an EC2 instance
-✅ Attaches a security group with open HTTP (port 80)
-✅ Uses a key pair for secure SSH access
-✅ Outputs the public IP so you can access the server right away
+✅ Provisions an EC2 instance
+✅ Sets up a security group allowing HTTP (port 80) access
+✅ Configures SSH key pair for secure login
+✅ Outputs the public IP so you can jump right in
 
-Everything is deployed with one command — no manual clicking around the AWS Console.
+Run one command and boom — your server’s live and ready.
 
 📁 Project Structure
-bash
-Copy
-Edit
+graphql
+Copy code
 Terraform-EC2-Auto-Deploy/
 │
-├── main.tf          # Core resources: EC2, Security Group
-├── variables.tf     # Input variables like region, AMI, key pair
-├── outputs.tf       # Exports values like public IP
-├── provider.tf      # AWS provider config
-└── .gitignore       # Ignores state files and sensitive data
+├── main.tf          # Core resources: EC2 instance, Security Group  
+├── variables.tf     # Input variables (region, AMI, instance type, key pair)  
+├── outputs.tf       # Outputs like public IP  
+├── provider.tf      # AWS provider setup  
+└── .gitignore       # Ignore Terraform state and sensitive files  
 🚀 How to Deploy
-Step 1 – Configure AWS CLI
+Step 1 — Configure AWS CLI
 
 bash
-Copy
-Edit
+Copy code
 aws configure
-Step 2 – Initialize Terraform
+Step 2 — Initialize Terraform
 
 bash
-Copy
-Edit
+Copy code
 terraform init
-Step 3 – Preview Changes
+Step 3 — Preview the plan
 
 bash
-Copy
-Edit
+Copy code
 terraform plan
-Step 4 – Apply Changes
+Step 4 — Apply your infrastructure
 
 bash
-Copy
-Edit
+Copy code
 terraform apply
-Wait ~1 min and your EC2 instance is live 🎯
+Wait about a minute, then get your server’s public IP and connect!
 
-🧠 Why It Matters (IaC Style)
-This project follows Infrastructure as Code principles by:
+🧠 Why This Matters
+Repeatable Deployments: Automate instead of clicking around
 
-🔁 Making cloud deployments repeatable
+Security: Key pairs and security groups set right from code
 
-🔒 Avoiding manual misconfigurations
+Version Controlled: Track your infra like your app code
 
-📜 Keeping a full version history of infra changes
+Career Boost: Real-world IaC skills recruiters dig
 
-💼 Showing employers real-world cloud automation skills
+Whether you’re prepping for your cloud engineer dream job, or building your own sandbox, this project is a solid foundation.
 
-Whether you're rebuilding your cloud lab, prepping for a job interview, or scaling infrastructure, this repo gives you a solid, repeatable foundation.
+🔧 Tech Stack
+Terraform — Your IaC powerhouse
 
-🔧 Technologies Used
-Terraform – Infrastructure as Code
+AWS EC2 — The cloud server itself
 
-AWS EC2 – Compute instance for web app/server
+AWS Security Groups — Your firewall guard
 
-AWS Security Groups – Firewall rules for EC2 access
+Git & GitHub — Source control and collaboration
 
-Git/GitHub – Source control & code history
-
-
+🖼️ Architecture Diagram (Mermaid)
+mermaid
+Copy code
+flowchart LR
+    CLI[Terraform CLI] -->|Calls AWS API| AWS[AWS Cloud]
+    AWS --> EC2[EC2 Instance]
+    AWS --> SG[Security Group]
+    EC2 --> UD[User Data Script (optional)]
+    EC2 --> OUT[Outputs: Public IP]
