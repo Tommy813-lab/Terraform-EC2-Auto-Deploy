@@ -1,14 +1,15 @@
 🔧 Installs & Prerequisites
-Before running this Terraform project, make sure the following tools are installed and configured on your local machine or cloud terminal:
+By Charles — Aspiring Cloud Engineer
+
+Before you launch your AWS EC2 instance and run your startup scripts, make sure you’ve got these essential tools installed and ready to roll on your local machine or cloud terminal:
 
 ✅ 1. AWS CLI
-Used to authenticate and manage AWS credentials.
+Your go-to tool for managing AWS from the command line — authenticates you and handles credentials.
 
-Install:
+Install AWS CLI:
 
 bash
-Copy
-Edit
+Copy code
 # macOS
 brew install awscli
 
@@ -17,13 +18,12 @@ sudo apt install awscli -y
 
 # Windows (PowerShell)
 choco install awscli
-Configure your AWS credentials:
+Configure AWS credentials:
 
 bash
-Copy
-Edit
+Copy code
 aws configure
-You'll be prompted for:
+You’ll be prompted to enter:
 
 AWS Access Key ID
 
@@ -33,66 +33,38 @@ Default region (e.g., us-east-1)
 
 Output format (e.g., json)
 
-✅ 2. Terraform
-The core tool used to define and provision infrastructure.
+✅ 2. SSH Key Pair
+You’ll need a valid EC2 key pair to securely SSH into your instance.
 
-Install:
-
-bash
-Copy
-Edit
-# macOS
-brew tap hashicorp/tap
-brew install hashicorp/tap/terraform
-
-# Ubuntu/Debian
-sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
-curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-sudo apt update && sudo apt install terraform
-
-# Windows (PowerShell)
-choco install terraform
-Verify install:
+Create a new SSH key pair locally:
 
 bash
-Copy
-Edit
-terraform -version
-✅ 3. SSH Key Pair
-You’ll need a valid AWS EC2 key pair for SSH access to the deployed instance.
-
-Create one in AWS Console or locally:
-
-bash
-Copy
-Edit
+Copy code
 ssh-keygen -t rsa -b 4096 -f my-key
-Upload the .pem or .pub file to AWS → EC2 → Key Pairs.
+Upload the generated .pem (private key) or .pub (public key) file to AWS Console under EC2 > Key Pairs.
 
-Update the Terraform variable key_name in variables.tf with the name of your key.
+Keep your private key safe—it’s your golden ticket for logging in!
 
-✅ 4. (Optional) Git
-If you're cloning or pushing this repo:
+✅ 3. (Optional) Git
+If you want to clone or push your project repo:
 
 bash
-Copy
-Edit
+Copy code
 # macOS
 brew install git
 
 # Ubuntu/Debian
 sudo apt install git -y
 
-# Windows
+# Windows (PowerShell)
 choco install git
-🧪 Verify Everything Works
+🧪 Verify You’re Set
+Run these commands to check your AWS CLI and SSH setup:
+
 bash
-Copy
-Edit
-terraform init
-terraform plan
-terraform apply
-Your EC2 instance should be deployed in under 60 seconds.
+Copy code
+aws sts get-caller-identity
+ssh -i my-key.pem ec2-user@<YOUR_INSTANCE_IP>
+If you get your AWS account info and connect to your instance, you’re golden.
 
-
+Once you’ve got this sorted, you’re all set to launch your EC2 instance with your startup script, automate software installs, and own the cloud like a pro.
