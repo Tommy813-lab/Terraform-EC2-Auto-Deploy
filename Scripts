@@ -1,38 +1,38 @@
-📁 scripts/user_data.sh – (Optional EC2 bootstrap script)
-This script auto-runs when the EC2 instance boots. It installs Apache and starts a simple HTML homepage.
+🧰 Scripts Overview
+📁 scripts/user_data.sh
+Optional EC2 bootstrap script
+Runs automatically when your EC2 instance boots. Installs Apache and deploys a simple HTML homepage so your server’s ready to serve.
 
 bash
-Copy
-Edit
+Copy code
 #!/bin/bash
 
-# Update packages
+# Update all packages
 yum update -y
 
-# Install Apache
+# Install Apache HTTP Server
 yum install -y httpd
 
-# Enable and start Apache
+# Enable Apache to start on boot and launch now
 systemctl enable httpd
 systemctl start httpd
 
-# Simple HTML page
+# Create a simple homepage
 echo "<h1>Deployed via Terraform by Tommy813</h1>" > /var/www/html/index.html
-✅ Drop this path in main.tf as:
+💡 Use in your Terraform main.tf:
 
 hcl
-Copy
-Edit
+Copy code
 user_data = file("scripts/user_data.sh")
-📁 scripts/terraform_setup.sh – (One-liner Terraform init & deploy)
-Use this to streamline setup, especially if you're showing this off in a portfolio demo.
+📁 scripts/terraform_setup.sh
+One-liner Terraform initializer and deployer
+Perfect for quick setups or demos. Runs init, plan, and apply in one go.
 
 bash
-Copy
-Edit
+Copy code
 #!/bin/bash
 
-# Fail fast
+# Exit immediately on any error
 set -e
 
 echo "Initializing Terraform..."
@@ -41,42 +41,51 @@ terraform init
 echo "Planning deployment..."
 terraform plan -out=tfplan
 
-echo "Applying changes..."
+echo "Applying Terraform plan..."
 terraform apply tfplan
-Make executable:
+Make it executable with:
 
 bash
-Copy
-Edit
+Copy code
 chmod +x scripts/terraform_setup.sh
-📁 scripts/destroy.sh – (Quick teardown script)
+Run it anytime to spin up your infrastructure quickly!
+
+📁 scripts/destroy.sh
+Quick teardown script
+Safely destroys all Terraform-managed AWS resources to avoid ongoing charges.
+
 bash
-Copy
-Edit
+Copy code
 #!/bin/bash
 
 echo "Destroying all Terraform-managed infrastructure..."
 terraform destroy -auto-approve
-📁 scripts/terraform.tfvars – (Optional values override)
-You can also create this if you want to separate secrets/configs from variables.tf:
-
-hcl
-Copy
-Edit
-aws_region   = "us-east-1"
-ami_id       = "ami-0c02fb55956c7d316"
-instance_type = "t2.micro"
-key_name     = "my-key"
-vpc_id       = "vpc-xxxxxxx"
-subnet_id    = "subnet-xxxxxxx"
-Then deploy like this:
+Make executable:
 
 bash
-Copy
-Edit
+Copy code
+chmod +x scripts/destroy.sh
+Run it when you want to clean up everything fast.
+
+📁 scripts/terraform.tfvars
+Optional config overrides
+Keep your sensitive or environment-specific values separate from your main Terraform files.
+
+Example content:
+
+hcl
+Copy code
+aws_region    = "us-east-1"
+ami_id        = "ami-0c02fb55956c7d316"
+instance_type = "t2.micro"
+key_name      = "my-key"
+vpc_id        = "vpc-xxxxxxx"
+subnet_id     = "subnet-xxxxxxx"
+Deploy with:
+
+bash
+Copy code
 terraform apply -var-file="scripts/terraform.tfvars"
-
-
 
 
 
